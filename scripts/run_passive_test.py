@@ -5,7 +5,7 @@ import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.env.mujoco_env import MujocoEnv
-from src.utils.logger import logger
+from src.utils.terminal_logger import TerminalLogger as logger
 
 def main():
     logger.info("Initializing passive stability test for Unitree Go1 robot...")
@@ -50,4 +50,11 @@ def main():
     env.close_viewer()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        logger.warning("Passive stability test interrupted by user.")
+    except Exception as e:
+        logger.error(f"An error occurred during the passive stability test: {e}")
+    finally:
+        logger.info("Passive stability test concluded.")
