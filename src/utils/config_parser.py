@@ -14,8 +14,13 @@ class SimConfig:
         self.timing = self._raw_cfg.get('timing', {})
         self.physics = self._raw_cfg.get('physics', {})
         
-        # Validate critical paths immediately
-        self.scene_xml_path = self.env_cfg.get('scene_xml_path')
+        # Resolve scene_xml_path relative to the config file's directory
+        config_dir = os.path.dirname(os.path.abspath(config_path))
+        raw_path = self.env_cfg.get('scene_xml_path')
+        if raw_path and not os.path.isabs(raw_path):
+            self.scene_xml_path = os.path.normpath(os.path.join(config_dir, raw_path))
+        else:
+            self.scene_xml_path = raw_path
         if not self.scene_xml_path or not os.path.exists(self.scene_xml_path):
             raise ValueError(f"Invalid scene_xml_path in config: {self.scene_xml_path}")
 
