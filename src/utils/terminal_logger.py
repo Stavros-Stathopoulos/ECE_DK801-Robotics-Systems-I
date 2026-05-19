@@ -29,7 +29,7 @@ class TerminalFormatter(logging.Formatter):
         else:
             color = self.RESET
             
-        formatted_message = f"{time_str} | {script_name} | {level_name} | {msg}"
+        formatted_message = f"{time_str} | {level_name} | {script_name} | {msg}"
         return f"{color}{formatted_message}{self.RESET}"
 
 def get_logger(name="robotics_logger"):
